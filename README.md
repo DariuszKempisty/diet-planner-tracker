@@ -15,4 +15,4 @@ Aplikacja do generowania przepisów i precyzyjnego śledzenia wartości odżywcz
 ## 🏁 Jak uruchomić projekt lokalnie
 1. Sklonuj repozytorium:
 ```bash
-git clone [https://github.com/DariuszKempisty/diet-planner-tracker.git](https://github.com/DariuszKempisty/diet-planner-tracker.git)
+git clone https://github.com/DariuszKempisty/diet-planner-tracker.git
