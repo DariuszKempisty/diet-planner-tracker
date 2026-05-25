@@ -245,9 +245,23 @@ header {
   <div class="panel-left">
     <div class="sec-label">Dodaj produkt</div>
 
+    <!-- USDA API KEY BANNER -->
+    <div id="apiKeyBanner" style="background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 12px;margin-bottom:12px;font-size:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-weight:600">USDA API</span>
+        <span id="apiStatus" style="font-size:11px;color:#fb923c">⬤ DEMO_KEY (limit 30/godz)</span>
+      </div>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="apiKeyInput" placeholder="Wklej swój klucz z fdc.nal.usda.gov"
+          style="flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:DM Mono,monospace;font-size:12px;padding:6px 8px;outline:none">
+        <button onclick="saveApiKey()" style="background:var(--accent2);border:none;border-radius:var(--radius-sm);color:var(--text);font-family:Syne,sans-serif;font-size:12px;font-weight:600;padding:6px 10px;cursor:pointer">Zapisz</button>
+      </div>
+      <div style="margin-top:5px;color:var(--muted);font-size:11px">Bezplatny klucz: fdc.nal.usda.gov/api-key-signup</div>
+    </div>
+
     <div class="search-wrap">
       <span class="search-icon">⌕</span>
-      <input type="text" class="search-input" id="searchInput" placeholder="Szukaj produktu... (np. łosoś, ryż, WPC)" autocomplete="off">
+      <input type="text" class="search-input" id="searchInput" placeholder="Szukaj po polsku lub angielsku..." autocomplete="off">
     </div>
     <div class="search-results" id="searchResults"></div>
 
@@ -460,6 +474,76 @@ const DB = {
   "Miód":                    [0.3,  0,   82.4, 304, 0.2,  0.5, 0,    0,    0.42, 6,   2,   0.22, 52,  4,   0,    0],
   "Kakao (proszek)":         [19.6, 13.7,57.9, 228, 33.2, 0,   0,    0,    13.9, 128, 499, 6.81, 1524,21,  0.09, 0],
   "Cynamon":                 [4.0,  1.2, 80.6, 247, 53.1, 3.8, 0,    0,    8.32, 1002,60,  1.83, 431, 10,  0.03, 0],
+
+  // SAŁATY I LIŚCIASTE
+  "Sałata lodowa":           [0.9,  0.1, 2.0,  14,  1.2,  2.8, 0,    0,    0.41, 18,  7,   0.15, 141, 10,  0.03, 0],
+  "Sałata masłowa":          [1.4,  0.2, 2.2,  13,  1.1,  3.7, 0,    0,    1.24, 35,  11,  0.20, 238, 5,   0.03, 0],
+  "Roszponka":               [2.0,  0.4, 3.6,  21,  1.8,  16.3,0,    0,    2.18, 38,  13,  0.25, 459, 38,  0.23, 0],
+  "Rukola":                  [2.6,  0.7, 3.7,  25,  1.6,  15.0,0,    0,    1.46, 160, 47,  0.47, 369, 27,  0.17, 0],
+  "Jarmuż":                  [4.3,  0.9, 8.8,  49,  3.6,  93.4,0,    0,    1.47, 135, 34,  0.39, 348, 38,  0.18, 0],
+
+  // WARZYWA CODZIENNE
+  "Ogórek":                  [0.7,  0.1, 3.6,  15,  0.5,  2.8, 0,    0,    0.28, 16,  13,  0.20, 147, 2,   0.01, 0],
+  "Ogórek kiszony":          [0.7,  0.1, 1.7,  11,  0.7,  2.5, 0,    0,    0.40, 17,  12,  0.18, 141, 731, 0.01, 0],
+  "Seler naciowy":           [0.7,  0.2, 3.0,  16,  1.6,  3.1, 0,    0,    0.20, 40,  11,  0.13, 260, 80,  0.01, 0],
+  "Seler korzeniowy":        [1.5,  0.3, 9.2,  42,  1.8,  8.0, 0,    0,    0.70, 43,  20,  0.33, 300, 100, 0.02, 0],
+  "Pietruszka korzeń":       [1.5,  0.6, 17.9, 75,  4.9,  41.0,0,    0,    0.59, 50,  22,  0.60, 342, 56,  0.04, 0],
+  "Pietruszka natka":        [3.0,  0.8, 6.3,  36,  3.3, 133.0,0,    0,    6.20, 138, 50,  1.07, 554, 56,  0.09, 0],
+  "Ziemniaki":               [2.0,  0.1, 17.0, 77,  2.2,  19.7,0,    0,    0.81, 12,  23,  0.30, 425, 6,   0.01, 0],
+  "Ziemniaki gotowane":      [1.9,  0.1, 15.7, 70,  1.8,  13.0,0,    0,    0.52, 8,   20,  0.25, 328, 4,   0.01, 0],
+  "Cebula":                  [1.1,  0.1, 9.3,  40,  1.7,  7.4, 0,    0,    0.21, 23,  10,  0.17, 146, 4,   0.01, 0],
+  "Czosnek":                 [6.4,  0.5, 33.1, 149, 2.1,  31.2,0,    0,    1.70, 181, 25,  1.16, 401, 17,  0.07, 0],
+  "Kalafior":                [1.9,  0.3, 5.0,  25,  2.0,  48.2,0,    0,    0.44, 22,  15,  0.27, 299, 30,  0.04, 0],
+  "Fasolka szparagowa":      [1.8,  0.1, 7.9,  31,  2.7,  16.3,0,    0,    1.03, 37,  25,  0.24, 209, 6,   0.03, 0],
+  "Groszek zielony":         [5.4,  0.4, 14.5, 81,  5.1,  40.0,0,    0,    1.47, 25,  33,  1.24, 244, 5,   0.04, 0],
+  "Kukurydza":               [3.3,  1.4, 19.0, 96,  2.7,  6.8, 0,    0,    0.52, 2,   37,  0.45, 270, 15,  0.04, 0],
+  "Buraki":                  [1.6,  0.2, 9.6,  43,  2.8,  4.9, 0,    0,    0.80, 16,  23,  0.35, 325, 78,  0.00, 0],
+  "Dynia":                   [1.0,  0.1, 6.5,  26,  0.5,  9.0, 0,    0,    0.80, 21,  12,  0.32, 340, 1,   0.00, 0],
+  "Bakłażan":                [1.0,  0.2, 5.9,  25,  3.0,  2.2, 0,    0,    0.23, 9,   14,  0.16, 229, 2,   0.01, 0],
+  "Rzodkiewka":              [0.7,  0.1, 3.4,  16,  1.6,  14.8,0,    0,    0.34, 25,  10,  0.28, 233, 39,  0.01, 0],
+  "Por":                     [1.5,  0.3, 14.2, 61,  1.8,  12.0,0,    0,    2.10, 59,  28,  0.12, 180, 20,  0.04, 0],
+
+  // OWOCE DODATKOWE
+  "Pomarańcza":              [0.9,  0.1, 11.8, 47,  2.4,  53.2,0,    0,    0.10, 40,  10,  0.07, 181, 0,   0.02, 0],
+  "Grejpfrut":               [0.8,  0.1, 10.7, 42,  1.6,  31.2,0,    0,    0.08, 22,  9,   0.07, 135, 0,   0.01, 0],
+  "Kiwi":                    [1.1,  0.5, 14.7, 61,  3.0,  92.7,0,    0,    0.31, 34,  17,  0.14, 312, 3,   0.04, 0],
+  "Mango":                   [0.8,  0.4, 15.0, 60,  1.6,  36.4,0,    0,    0.16, 11,  10,  0.09, 168, 1,   0.05, 0],
+  "Gruszka":                 [0.4,  0.1, 15.2, 57,  3.1,  4.3, 0,    0,    0.18, 9,   7,   0.10, 116, 1,   0.01, 0],
+  "Winogrona":               [0.6,  0.2, 18.1, 69,  0.9,  10.8,0,    0,    0.36, 10,  7,   0.07, 191, 2,   0.02, 0],
+  "Ananas":                  [0.5,  0.1, 13.1, 50,  1.4,  47.8,0,    0,    0.29, 13,  12,  0.12, 109, 1,   0.02, 0],
+  "Maliny":                  [1.2,  0.7, 11.9, 52,  6.5,  26.2,0,    0,    0.69, 25,  22,  0.42, 151, 1,   0.11, 0],
+  "Wiśnie":                  [1.0,  0.3, 16.0, 63,  2.1,  7.0, 0,    0,    0.36, 13,  11,  0.10, 222, 3,   0.05, 0],
+
+  // MIĘSO I WĘDLINY
+  "Schab wieprzowy":         [21.3, 5.8, 0,    143, 0,    0,   0.7,  0.7,  0.90, 12,  22,  2.20, 356, 50,  0.04, 62],
+  "Szynka drobiowa":         [18.0, 3.0, 1.5,  105, 0,    0,   0,    0.3,  0.80, 10,  20,  1.00, 230, 800, 0.05, 55],
+  "Pierś z kurczaka wędzona":[25.0, 2.5, 1.0,  127, 0,    0,   0,    0.3,  0.80, 12,  25,  1.10, 240, 700, 0.04, 65],
+  "Polędwica drobiowa":      [19.0, 2.0, 2.0,  102, 0,    0,   0,    0.3,  0.80, 10,  18,  1.00, 220, 750, 0.04, 55],
+  "Mielone wołowe":          [17.2, 20.0,0,    250, 0,    0,   0.1,  2.1,  2.20, 18,  18,  4.79, 270, 72,  0.50, 78],
+
+  // NABIAŁ UZUPEŁNIENIE
+  "Kefir":                   [3.4,  3.5, 4.5,  61,  0,    0,   0.06, 0.5,  0.04, 120, 13,  0.36, 150, 55,  0.10, 12],
+  "Maślanka":                [3.3,  0.9, 4.8,  40,  0,    0,   0.05, 0.4,  0.03, 116, 10,  0.38, 151, 105, 0.02, 4],
+  "Ser cottage":             [11.1, 4.3, 3.4,  98,  0,    0,   0.1,  1.0,  0.15, 83,  8,   0.40, 104, 364, 0.06, 17],
+  "Ricotta":                 [11.3, 9.5, 3.0,  143, 0,    0,   0.3,  0.3,  0.38, 207, 11,  1.16, 105, 84,  0.20, 38],
+  "Mozzarella":              [22.2, 22.4,2.2,  300, 0,    0,   0.4,  2.3,  0.35, 505, 20,  2.92, 76,  627, 0.33, 79],
+
+  // STRĄCZKOWE
+  "Soczewica czerwona":      [9.0,  0.4, 20.1, 116, 7.9,  1.5, 0,    0,    3.30, 19,  36,  1.27, 369, 2,   0.06, 0],
+  "Ciecierzyca gotowana":    [8.9,  2.6, 27.4, 164, 7.6,  1.3, 0,    0,    2.89, 49,  48,  1.53, 291, 7,   0.04, 0],
+  "Fasola czerwona":         [8.7,  0.5, 22.8, 127, 6.4,  1.2, 0,    0,    2.94, 28,  45,  1.07, 403, 2,   0.13, 0],
+  "Fasola biała":            [9.7,  0.4, 25.1, 139, 6.3,  0,   0,    0,    3.70, 90,  63,  1.38, 561, 6,   0.10, 0],
+
+  // PRZEKĄSKI / INNE
+  "Ryż preparowany":         [6.7,  0.6, 80.0, 365, 0.4,  0,   0,    0,    0.80, 10,  35,  1.10, 150, 5,   0.02, 0],
+  "Wafle ryżowe":            [7.3,  2.5, 80.5, 387, 3.5,  0,   0,    0,    2.20, 13,  95,  1.10, 145, 343, 0.03, 0],
+  "Płatki kukurydziane":     [7.0,  0.9, 84.0, 378, 2.0,  0,   0,    0,    8.80, 3,   14,  0.32, 92,  661, 0.05, 0],
+  "Kasza manna":             [10.3, 1.1, 73.8, 360, 3.9,  0,   0,    0,    1.23, 17,  47,  0.82, 186, 1,   0.04, 0],
+  "Olej rzepakowy":          [0,    100, 0,    884, 0,    0,   0,    0,    0,    0,   0,   0,    0,   0,   9.14, 0],
+  "Olej lniany":             [0,    100, 0,    884, 0,    0,   0,    0,    0,    0,   0,   0,    0,   0,   53.3, 0],
+  "Orzechy nerkowca":        [18.2, 43.9,30.2, 553, 3.3,  0.5, 0,    0,    6.68, 37,  292, 5.78, 660, 12,  0.16, 0],
+  "Orzechy laskowe":         [14.9, 60.8,16.7, 628, 9.7,  6.3, 0,    0,    4.70, 114, 163, 2.45, 680, 0,   0.09, 0],
+  "Chia":                    [16.5, 30.7,42.1, 486, 34.4, 1.6, 0,    0,    7.72, 631, 335, 4.58, 407, 16,  17.8, 0],
 };
 
 const MICRO_DEFS = [
@@ -477,8 +561,62 @@ const MICRO_DEFS = [
 const TARGETS_TRAINING = { kcal:2876, prot:195, fat:98, carb:309, fiber:38, omega3:1.6, chol:300 };
 let currentTargets = { ...TARGETS_TRAINING };
 let entries = [];
-let selectedFood = null;
+let selectedFood = null;   // { name, data: [16 values per 100g], source }
 let activeFilter = 'all';
+
+// Klucz API — zapisany w localStorage przeglądarki
+let USDA_KEY = localStorage.getItem('usda_api_key') || 'DEMO_KEY';
+
+function saveApiKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  if (!val) return;
+  USDA_KEY = val;
+  localStorage.setItem('usda_api_key', val);
+  document.getElementById('apiStatus').textContent = '⬤ Klucz zapisany';
+  document.getElementById('apiStatus').style.color = '#4ade80';
+  document.getElementById('apiKeyInput').value = '';
+}
+
+// Przy starcie — pokaż status
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('usda_api_key');
+  if (saved) {
+    document.getElementById('apiStatus').textContent = '⬤ Własny klucz aktywny';
+    document.getElementById('apiStatus').style.color = '#4ade80';
+  }
+});
+const USDA_URL = 'https://api.nal.usda.gov/fdc/v1';
+
+// USDA nutrient IDs → nasze indeksy
+// [0]protein [1]fat [2]carbs [3]kcal [4]fiber [5]vitC [6]vitD [7]vitB12 [8]iron [9]calcium [10]magnesium [11]zinc [12]potassium [13]sodium [14]omega3 [15]cholesterol
+const NUTRIENT_MAP = {
+  1003: 0,   // Protein
+  1004: 1,   // Total lipid (fat)
+  1005: 2,   // Carbohydrate
+  1008: 3,   // Energy (kcal)
+  1079: 4,   // Fiber
+  1162: 5,   // Vitamin C
+  1114: 6,   // Vitamin D
+  1178: 7,   // Vitamin B12
+  1089: 8,   // Iron
+  1087: 9,   // Calcium
+  1090: 10,  // Magnesium
+  1095: 11,  // Zinc
+  1092: 12,  // Potassium
+  1093: 13,  // Sodium
+  1316: 14,  // Omega-3 (18:3 ALA) — fallback do 1293 (total n-3)
+  1293: 14,  // Total omega-3
+  1253: 15,  // Cholesterol
+};
+
+const DB_KEYS = Object.keys(DB);
+
+function norm(s) {
+  return s.toLowerCase()
+    .replace(/ł/g,'l').replace(/ó/g,'o').replace(/ą/g,'a')
+    .replace(/ę/g,'e').replace(/ś/g,'s').replace(/ź/g,'z')
+    .replace(/ż/g,'z').replace(/ć/g,'c').replace(/ń/g,'n');
+}
 
 // Search
 const searchInput = document.getElementById('searchInput');
@@ -486,43 +624,118 @@ const searchResults = document.getElementById('searchResults');
 const addForm = document.getElementById('addForm');
 const gramInput = document.getElementById('gramInput');
 
-const DB_KEYS = Object.keys(DB);
+let searchTimer = null;
 
 searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase()
-    .replace(/ł/g,'l').replace(/ó/g,'o').replace(/ą/g,'a')
-    .replace(/ę/g,'e').replace(/ś/g,'s').replace(/ź/g,'z')
-    .replace(/ż/g,'z').replace(/ć/g,'c').replace(/ń/g,'n');
+  clearTimeout(searchTimer);
+  const q = searchInput.value.trim();
   if (!q) { searchResults.classList.remove('visible'); addForm.classList.remove('visible'); return; }
 
-  function norm(s) {
-    return s.toLowerCase()
-      .replace(/ł/g,'l').replace(/ó/g,'o').replace(/ą/g,'a')
-      .replace(/ę/g,'e').replace(/ś/g,'s').replace(/ź/g,'z')
-      .replace(/ż/g,'z').replace(/ć/g,'c').replace(/ń/g,'n');
-  }
+  // Najpierw pokaż lokalne wyniki natychmiast
+  showLocalResults(q);
 
-  const matches = DB_KEYS.filter(k => norm(k).includes(q)).slice(0, 10);
-  if (!matches.length) { searchResults.innerHTML = `<div class="search-result" style="cursor:default;color:var(--muted)">Brak wyników dla „${searchInput.value}"</div>`; searchResults.classList.add('visible'); return; }
-
-  searchResults.innerHTML = matches.map((name, i) => {
-    const idx = DB_KEYS.indexOf(name);
-    const v = DB[name]; const p100 = v[0], t100 = v[1], w100 = v[2], k100 = v[3];
-    return `<div class="search-result" data-idx="${idx}" onclick="selectFoodByIdx(${idx})">
-      <div><div class="sr-name">${name}</div><div class="sr-meta">B:${p100}g · T:${t100}g · W:${w100}g / 100g</div></div>
-      <div class="sr-kcal">${k100} kcal</div>
-    </div>`;
-  }).join('');
-  searchResults.classList.add('visible');
+  // Po 500ms odpytaj USDA
+  searchTimer = setTimeout(() => searchUSDA(q), 500);
 });
 
-function selectFoodByIdx(idx) {
-  selectFood(DB_KEYS[idx]);
+function showLocalResults(q) {
+  const qn = norm(q);
+  const matches = DB_KEYS.filter(k => norm(k).includes(qn)).slice(0, 5);
+  if (!matches.length) {
+    searchResults.innerHTML = `<div style="padding:8px 14px;font-size:12px;color:var(--muted)">Szukam w USDA...</div>`;
+  } else {
+    searchResults.innerHTML =
+      `<div style="padding:6px 14px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Lokalna baza</div>` +
+      matches.map(name => {
+        const idx = DB_KEYS.indexOf(name);
+        const v = DB[name];
+        return `<div class="search-result" onclick="selectLocalFood(${idx})">
+          <div><div class="sr-name">${name}</div><div class="sr-meta">B:${v[0]}g · T:${v[1]}g · W:${v[2]}g / 100g</div></div>
+          <div class="sr-kcal">${v[3]} kcal</div>
+        </div>`;
+      }).join('') +
+      `<div style="padding:6px 14px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Szukam w USDA...</div>`;
+  }
+  searchResults.classList.add('visible');
 }
 
-function selectFood(name) {
-  selectedFood = name;
-  document.getElementById('formSelected').textContent = name;
+async function searchUSDA(q) {
+  try {
+    // Szukaj po angielsku jeśli to znane polskie słowo, inaczej wyślij wprost
+    const res = await fetch(`${USDA_URL}/foods/search?query=${encodeURIComponent(q)}&pageSize=8&dataType=SR%20Legacy,Foundation&api_key=${USDA_KEY}`);
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    appendUSDAResults(q, data.foods || []);
+  } catch(e) {
+    // cichy fallback — lokalna baza została już pokazana
+    const cur = searchResults.querySelector('[data-usda-loading]');
+    if (cur) cur.remove();
+    const lastDiv = searchResults.lastElementChild;
+    if (lastDiv && lastDiv.textContent.includes('USDA')) {
+      lastDiv.textContent = 'USDA niedostępne — korzystam z lokalnej bazy';
+    }
+  }
+}
+
+function appendUSDAResults(q, foods) {
+  // Usuń "Szukam w USDA..." placeholder
+  const placeholders = searchResults.querySelectorAll('[data-usda-loading], div:last-child');
+  searchResults.querySelectorAll('div').forEach(d => {
+    if (d.textContent.includes('Szukam w USDA')) d.remove();
+  });
+
+  if (!foods.length) return;
+
+  const header = document.createElement('div');
+  header.style.cssText = 'padding:6px 14px 4px;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-top:1px solid var(--border)';
+  header.textContent = 'USDA FoodData Central';
+  searchResults.appendChild(header);
+
+  foods.slice(0, 8).forEach(food => {
+    const nutrients = food.foodNutrients || [];
+    const vals = new Array(16).fill(0);
+    nutrients.forEach(n => {
+      const idx = NUTRIENT_MAP[n.nutrientId];
+      if (idx !== undefined && n.value) vals[idx] = n.value;
+    });
+    // Omega-3: preferuj 1293 jeśli 1316 jest 0
+    if (!vals[14]) {
+      const n3 = nutrients.find(n => n.nutrientId === 1293);
+      if (n3) vals[14] = n3.value || 0;
+    }
+
+    const p = vals[0].toFixed(1), t = vals[1].toFixed(1), w = vals[2].toFixed(1), k = Math.round(vals[3]);
+    const desc = food.description || '';
+    const shortDesc = desc.length > 50 ? desc.slice(0,50)+'…' : desc;
+
+    const div = document.createElement('div');
+    div.className = 'search-result';
+    div.innerHTML = `
+      <div>
+        <div class="sr-name">${shortDesc}</div>
+        <div class="sr-meta">B:${p}g · T:${t}g · W:${w}g / 100g · fdcId:${food.fdcId}</div>
+      </div>
+      <div class="sr-kcal">${k} kcal</div>`;
+    div.addEventListener('click', () => selectUSDAFood(food.description, vals));
+    searchResults.appendChild(div);
+  });
+}
+
+function selectLocalFood(idx) {
+  const name = DB_KEYS[idx];
+  const vals = [...DB[name]];
+  selectedFood = { name, data: vals, source: 'local' };
+  showAddForm(name);
+}
+
+function selectUSDAFood(name, vals) {
+  selectedFood = { name, data: vals, source: 'usda' };
+  showAddForm(name);
+}
+
+function showAddForm(name) {
+  const short = name.length > 45 ? name.slice(0,45)+'…' : name;
+  document.getElementById('formSelected').textContent = short;
   addForm.classList.add('visible');
   searchResults.classList.remove('visible');
   searchInput.value = '';
@@ -535,11 +748,14 @@ gramInput.addEventListener('input', updatePreview);
 function updatePreview() {
   if (!selectedFood) return;
   const g = parseFloat(gramInput.value) || 100;
-  const v = DB[selectedFood];
+  const v = selectedFood.data;
   const f = g / 100;
   const p = (v[0]*f).toFixed(1), t = (v[1]*f).toFixed(1), w = (v[2]*f).toFixed(1), k = Math.round(v[3]*f);
+  const src = selectedFood.source === 'usda'
+    ? `<span style="font-size:10px;color:var(--accent);margin-left:8px">USDA ✓</span>`
+    : `<span style="font-size:10px;color:var(--muted);margin-left:8px">lokalna baza</span>`;
   document.getElementById('formPreview').innerHTML =
-    `B: <span style="color:var(--green)">${p}g</span> &nbsp; T: <span style="color:var(--orange)">${t}g</span> &nbsp; W: <span style="color:var(--blue)">${w}g</span> &nbsp; <span style="color:var(--accent)">${k} kcal</span>`;
+    `B: <span style="color:var(--green)">${p}g</span> &nbsp; T: <span style="color:var(--orange)">${t}g</span> &nbsp; W: <span style="color:var(--blue)">${w}g</span> &nbsp; <span style="color:var(--accent)">${k} kcal</span>${src}`;
 }
 
 document.getElementById('btnAdd').addEventListener('click', () => {
@@ -547,7 +763,11 @@ document.getElementById('btnAdd').addEventListener('click', () => {
   const g = parseFloat(gramInput.value);
   if (!g || g <= 0) return;
   const meal = document.getElementById('mealSelect').value;
-  entries.push({ id: Date.now(), name: selectedFood, grams: g, meal });
+  const name = selectedFood.name;
+  const data = selectedFood.data;
+  // cache do lokalnej bazy żeby móc przeliczać
+  if (!DB[name]) DB[name] = data;
+  entries.push({ id: Date.now(), name, grams: g, meal });
   selectedFood = null;
   addForm.classList.remove('visible');
   gramInput.value = 100;
